@@ -1,10 +1,22 @@
-import React from 'react';
-import UserForm from './components/user-form';
+import React, { useState } from "react";
+import UserForm from "./components/add-user";
+import UsersList from "./components/users-list";
 
-function App() {
+const App = () => {
+  const [users, setUsers] = useState([]);
+
+  const handleAddUser = (user) => {
+    setUsers((prevState) => {
+      return [...prevState, user];
+    });
+  };
+
   return (
-    <UserForm />
+    <div>
+      <UserForm onAddUser={handleAddUser} />
+      <UsersList users={users} />
+    </div>
   );
-}
+};
 
 export default App;

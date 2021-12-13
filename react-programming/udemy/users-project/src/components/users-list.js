@@ -1,11 +1,20 @@
-import UserItem from "./user-item";
+import Card from "./card";
 
-const UsersList = props => {
-    const { users } = props;
+import styles from "./styles.module.css";
 
-    return (
-        users && users.map((user, i) => <UserItem key={i} user={user} />)
-    );
-}
+const UsersList = ({ users }) => {
+  return (
+    <Card className={styles.users}>
+      <ul>
+        {users &&
+          users.map((user, i) => (
+            <li key={i}>
+              {user.name} ({user.age} years old)
+            </li>
+          ))}
+      </ul>
+    </Card>
+  );
+};
 
 export default UsersList;
