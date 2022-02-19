@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Sona.Hakobyan\\source\\diploma\\dev\\PartitioningProblem\\PartitioningProblem\\PartitioningProblem.csproj": {}
+    "C:\\Users\\Sona.Hakobyan\\source\\repos\\edu\\PartitioningProblem\\PartitioningProblem\\PartitioningProblem.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Sona.Hakobyan\\source\\diploma\\dev\\PartitioningProblem\\PartitioningProblem\\PartitioningProblem.csproj": {
+    "C:\\Users\\Sona.Hakobyan\\source\\repos\\edu\\PartitioningProblem\\PartitioningProblem\\PartitioningProblem.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Sona.Hakobyan\\source\\diploma\\dev\\PartitioningProblem\\PartitioningProblem\\PartitioningProblem.csproj",
+        "projectUniqueName": "C:\\Users\\Sona.Hakobyan\\source\\repos\\edu\\PartitioningProblem\\PartitioningProblem\\PartitioningProblem.csproj",
         "projectName": "PartitioningProblem",
-        "projectPath": "C:\\Users\\Sona.Hakobyan\\source\\diploma\\dev\\PartitioningProblem\\PartitioningProblem\\PartitioningProblem.csproj",
+        "projectPath": "C:\\Users\\Sona.Hakobyan\\source\\repos\\edu\\PartitioningProblem\\PartitioningProblem\\PartitioningProblem.csproj",
         "packagesPath": "C:\\Users\\Sona.Hakobyan\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Sona.Hakobyan\\source\\diploma\\dev\\PartitioningProblem\\PartitioningProblem\\obj\\",
+        "outputPath": "C:\\Users\\Sona.Hakobyan\\source\\repos\\edu\\PartitioningProblem\\PartitioningProblem\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Sona.Hakobyan\\AppData\\Roaming\\NuGet\\NuGet.Config",
