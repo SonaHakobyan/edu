@@ -2,34 +2,44 @@
 {
     public class SubsetSum
     {
-        public static HashSet<Element> Partition(HashSet<Element> a, HashSet<Element> b, long k)
+        public static HashSet<Element> Partition(HashSet<Element> a, HashSet<Element> b)
         {
-            long previousSum = -1;
-            long currentSum = -1;
+            long sumA = a.Sum(element => element.Value);
+            long sumB = b.Sum(element => element.Value);
+
+            long previousSumA;
+            long previousSumB;
+
+            var prevA = default(HashSet<Element>);
+            var prevB = default(HashSet<Element>);
+
             var logs = new LinkedList<LogData>();
-            var prevA = new HashSet<Element>(a);
 
             while (true)
             {
-                previousSum = currentSum;
+                previousSumA = sumA;
+                previousSumB = sumB;
+
                 prevA = new HashSet<Element>(a);
+                prevB = new HashSet<Element>(b);
 
                 var initialA = new HashSet<Element>(a);
                 var initialB = new HashSet<Element>(b);
 
                 while (a.Any(element => !element.Visited) || b.Any(element => !element.Visited))
                 {
-                    currentSum = a.Sum(element => element.Value);
+                    sumA = a.Sum(element => element.Value);
+                    sumB = b.Sum(element => element.Value);
 
-                    if (currentSum == k)
+                    if (sumA == sumB)
                         return a;
 
-                    var elementOfA = findClosest(a, currentSum - k);
-                    var elementOfB = findClosest(b, k - currentSum);
+                    var elementOfA = FindClosest(a, (sumA - sumB) / 2);
+                    var elementOfB = FindClosest(b, (sumB - sumA) / 2);
 
                     if (elementOfB == null)
                     {
-                        logs.AddLast(new LogData(elementOfA, true, Math.Abs(k - currentSum + elementOfA.Value)));
+                        logs.AddLast(new LogData(elementOfA, true, Math.Abs(sumA - sumB - 2 * elementOfA.Value)));
 
                         elementOfA.Visited = true;
 
@@ -41,7 +51,7 @@
                     }
                     else if (elementOfA == null)
                     {
-                        logs.AddLast(new LogData(elementOfB, false, Math.Abs(k - currentSum - elementOfB.Value)));
+                        logs.AddLast(new LogData(elementOfB, false, Math.Abs(sumA - sumB - 2 * elementOfB.Value)));
 
                         elementOfB.Visited = true;
 
@@ -51,12 +61,15 @@
                         continue;
                     }
 
-                    var newSumIfA = currentSum - elementOfA.Value;
-                    var newSumIfB = currentSum + elementOfB.Value;
+                    var newSumAIfFromA = sumA - elementOfA.Value;
+                    var newSumBIfFromA = sumB + elementOfA.Value;
 
-                    if (Math.Abs(k - newSumIfA) < Math.Abs(k - newSumIfB))
+                    var newSumAIfFromB = sumA + elementOfB.Value;
+                    var newSumBIfFromB = sumB - elementOfB.Value;
+
+                    if (Math.Abs(newSumAIfFromA - newSumBIfFromA) < Math.Abs(newSumAIfFromB - newSumBIfFromB))
                     {
-                        logs.AddLast(new LogData(elementOfA, true, Math.Abs(k - newSumIfA)));
+                        logs.AddLast(new LogData(elementOfA, true, Math.Abs(newSumAIfFromA - newSumBIfFromA)));
 
                         elementOfA.Visited = true;
 
@@ -65,9 +78,9 @@
                     }
                     else
                     {
-                        logs.AddLast(new LogData(elementOfB, false, Math.Abs(k - newSumIfB)));
+                        logs.AddLast(new LogData(elementOfB, false, Math.Abs(newSumAIfFromB - newSumBIfFromB)));
 
-                        elementOfB.Visited=true;
+                        elementOfB.Visited = true;
 
                         b.Remove(elementOfB);
                         a.Add(elementOfB);
@@ -96,7 +109,8 @@
                         break;
                 }
 
-                currentSum = a.Sum(element => element.Value);   
+                sumA = a.Sum(element => element.Value);
+                sumB = b.Sum(element => element.Value);
 
                 logs = new LinkedList<LogData>();
 
@@ -110,7 +124,7 @@
                     element.Visited = false;
                 }
 
-                if(Math.Abs(k - previousSum) <= Math.Abs(k - currentSum))
+                if (Math.Abs(sumA - sumB) >= Math.Abs(previousSumA - previousSumB))
                 {
                     break;
                 }
@@ -119,7 +133,7 @@
             return prevA;
         }
 
-        private static Element findClosest(HashSet<Element> elements, long k)
+        private static Element FindClosest(HashSet<Element> elements, long k)
         {
             var result = default(Element);
 
@@ -134,6 +148,7 @@
                     result = element;
                 }
             }
+
             return result;
         }
     }
