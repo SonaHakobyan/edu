@@ -1,21 +1,46 @@
 ﻿namespace PartitioningProblem
 {
+    /// <summary>
+    /// Represents log information
+    /// </summary>
     public class LogData : IComparable<LogData>
     {
+        /// <summary>
+        /// The swapping element 
+        /// </summary>
         public Element Element { get; set; }
-        public bool FormA { get; private set; }
-        public long Differance { get; private set; }
 
-        public LogData(Element element, bool formA, long differance)
+        /// <summary>
+        /// Determine if element was in A
+        /// </summary>
+        public bool FormA { get; }
+
+        /// <summary>
+        /// Difference of two subsets
+        /// </summary>
+        public long Difference { get; }
+
+        /// <summary>
+        /// Create a new instance of LogData
+        /// </summary>
+        /// <param name="element"></param>
+        /// <param name="formA"></param>
+        /// <param name="difference"></param>
+        public LogData(Element element, bool formA, long difference)
         {
             this.Element = element;
             this.FormA = formA;
-            this.Differance = differance;
+            this.Difference = difference;
         }
 
+        /// <summary>
+        /// Compare this to another log
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
         public int CompareTo(LogData? other)
         {
-            return Differance.CompareTo(other?.Differance);
+            return Difference.CompareTo(other?.Difference);
         }
     }
 }
