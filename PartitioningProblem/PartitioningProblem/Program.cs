@@ -2,59 +2,64 @@
 
 public class Program
 {
+    public const double ITERATION_SIZE = 100;
+    //public const int SET_SIZE = 25000;
+    public const int RANGE_FROM = 10;
+    public const int RANGE_TO = 100000;
+
     static void Main(string[] args)
     {
+        Console.WriteLine("SET_SIZE");
+        int SET_SIZE = Convert.ToInt32(Console.ReadLine());
+
         var random = new Random();
-
-        while (true)
+        var iterations = 0;
+        var faults = 0;
+        double errorRate = 0;
+        
+        while (iterations < ITERATION_SIZE - 1)
         {
-            // the partition set
-            var set = new HashSet<Element>();
+            var set = new HashSet<int>();
 
-            // the size of set
-            var size = random.Next(2, 50);
-
-            for (var i = 0; i < size; i++)
+            while (set.Count < SET_SIZE - 1)
             {
-                // generate a random number
-                var num = random.Next(0, 100);
-
-                // insert into set
-                set.Add(new Element(num));
-
-                Console.Write($"{num} ");
+                set.Add(random.Next(RANGE_FROM, RANGE_TO));
             }
 
-            // sup up set elements
-            var total = set.Sum(i => i.Value);
+            var setSum1 = set.Take(set.Count / 2).Sum();
+            var setSum2 = set.TakeLast(set.Count / 2 + set.Count % 2).Sum();
 
-            Console.WriteLine();
-            Console.WriteLine();
-            Console.WriteLine($"Total Sum - {total}");
-            Console.WriteLine($"Half Sum - { total / 2}");
-            Console.WriteLine();
-
-            // run partition algorithm throw set and get subsets
-            var (firstSubset, secondSubset ) = SubsetSum.Partition(set);
-
-            Console.WriteLine($"First Subset Sum - { firstSubset.Sum(element => element.Value)}");
-
-            foreach (var item in firstSubset)
+            var diffSum = Math.Abs(setSum1 - setSum2);
+            if (set.Contains(diffSum))
             {
-                Console.Write($"{item.Value} ");
+                continue;
+            };
+            set.Add(diffSum);
+
+            var result = SubsetSum.Partition(set);
+
+            double s1 = result.A.Sum(element => element.Value);
+            double s2 = result.B.Sum(element => element.Value);
+
+            if (s1 != s2)
+            {
+                faults++;
+                var actualResult = set.Sum() / 2;
+                var accuracy = 100 * (Math.Min(s1, s2) / actualResult);
+                errorRate += 100 - accuracy;
             }
 
-            Console.WriteLine();
-            Console.WriteLine();
-            Console.WriteLine($"Second Subset Sum - { secondSubset .Sum(element => element.Value)}");
-
-            foreach (var item in secondSubset )
-            {
-                Console.Write($"{item.Value} ");
-            }
-
-            Console.WriteLine();
-            Console.WriteLine("_________________________");
+            iterations++;
         }
+
+        using StreamWriter output = new(@"C:\Users\Sona.Hakobyan\source\repos\edu\PartitioningProblem\output.txt", true);
+        output.WriteLine($"ITERATION_SIZE - {ITERATION_SIZE}");
+        output.WriteLine($"SET_SIZE - {SET_SIZE}");
+        output.WriteLine($"RANGE_FROM - {RANGE_FROM}");
+        output.WriteLine($"RANGE_TO - {RANGE_TO}");
+        output.WriteLine($"FAULTS - {faults }");
+        output.WriteLine($"FAULTS_ERROR_RATE - {errorRate / faults }%");
+        output.WriteLine($"ERROR_RATE - {errorRate / ITERATION_SIZE }%");
+        output.WriteLine();
     }
 }

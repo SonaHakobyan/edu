@@ -2,8 +2,12 @@
 {
     public class SubsetSum
     {
-        public static Tuple<HashSet<Element>, HashSet<Element>> Partition(HashSet<Element> set)
+        public static PartitionResult Partition(HashSet<int> numberSet)
         {
+            var set = numberSet.Select(num => new Element(num)).ToHashSet();
+
+            var iterations = 0;
+
             // separate set into to subsets
             var a = set.Take(set.Count / 2).ToHashSet();
             var b = set.TakeLast(set.Count / 2 + set.Count % 2).ToHashSet();
@@ -38,7 +42,12 @@
 
                     // desired partition found
                     if (sumA == sumB)
-                        return new Tuple<HashSet<Element>, HashSet<Element>>(a, b);
+                        return new PartitionResult
+                        {
+                            A = a,
+                            B = b,
+                            Iterations = iterations
+                        };
 
                     // find the best element to swap from A to B to make their sums closer
                     var elementOfA = FindClosest(a, (sumA - sumB) / 2);
@@ -163,10 +172,17 @@
                 {
                     element.Visited = false;
                 }
+
+                iterations++;
             }
 
             // return partitioned subsets
-            return new Tuple<HashSet<Element>, HashSet<Element>>(initialA, initialB);
+            return new PartitionResult
+            {
+                A = initialA,
+                B = initialB,
+                Iterations = iterations
+            };
         }
 
         private static Element FindClosest(HashSet<Element> elements, long k)
