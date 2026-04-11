@@ -1,0 +1,28 @@
+﻿services:
+  postgres:
+    build:
+      context: ./src/user-mgmt/postgres
+      dockerfile: Dockerfile
+    environment:
+      POSTGRES_USER: usr
+      POSTGRES_PASSWORD: pas
+      POSTGRES_DB: usersdb
+    ports:
+      - "6432:5432"
+    volumes:
+      - usersdb-data:/var/lib/postgresql/data
+
+  user-mgmt:
+    build:
+      context: ./src/user-mgmt
+      dockerfile: Dockerfile.Build
+    depends_on:
+      - postgres
+    environment:
+      ASPNETCORE_URLS: http://+:9001
+      ConnectionStrings__UsersDb: "Host=postgres;Port=5432;Database=usersdb;Username=usr;Password=pas"
+    ports:
+      - "6002:9001"
+
+volumes:
+  usersdb-data:
