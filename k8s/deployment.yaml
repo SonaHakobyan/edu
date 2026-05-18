@@ -19,34 +19,12 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 9001
+          envFrom:
+            - configMapRef:
+                name: office-mgmt-config
           env:
             - name: ASPNETCORE_HTTP_PORTS
               value: "9001"
-            - name: ASPNETCORE_ENVIRONMENT
-              valueFrom:
-                configMapKeyRef:
-                  name: office-mgmt-config
-                  key: ASPNETCORE_ENVIRONMENT
-            - name: DB_HOST
-              valueFrom:
-                configMapKeyRef:
-                  name: office-mgmt-config
-                  key: DB_HOST
-            - name: DB_PORT
-              valueFrom:
-                configMapKeyRef:
-                  name: office-mgmt-config
-                  key: DB_PORT
-            - name: DB_NAME
-              valueFrom:
-                configMapKeyRef:
-                  name: office-mgmt-config
-                  key: DB_NAME
-            - name: DB_USER
-              valueFrom:
-                configMapKeyRef:
-                  name: office-mgmt-config
-                  key: DB_USER
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
